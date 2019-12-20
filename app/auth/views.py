@@ -26,7 +26,7 @@ def register():
         # add employee to the database
         db.session.add(user)
         db.session.commit()
-        flash('You have successfully registered! You may now login.')
+        flash('You have successfully registered! You may now log in.')
 
         # redirect to the login page
         return redirect(url_for('auth.login'))
