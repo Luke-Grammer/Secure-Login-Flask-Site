@@ -3,6 +3,7 @@
 
 from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, login_user, logout_user
+from datetime import timedelta
 
 from . import auth
 from .forms import LoginForm, RegistrationForm
@@ -50,14 +51,14 @@ def login():
         if user is not None and user.verify_password(
                 form.password.data):
             # log user in
-            login_user(user)
+            login_user(user=user, duration=timedelta(seconds=3600))
 
             # redirect to the dashboard page after login
             return redirect(url_for('home.dashboard'))
 
         # when login details are incorrect
         else:
-            flash('Invalid email/password combination.')
+            flash('Invalid email/password combination.', 'error')
 
     # load login template
     return render_template('auth/login.html', form=form, title='Login')
