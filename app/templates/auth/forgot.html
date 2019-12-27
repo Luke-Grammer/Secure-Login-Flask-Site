@@ -1,20 +1,19 @@
-<!-- app/templates/auth/login.html -->
+<!-- app/templates/auth/forgot.html -->
 
 {% import "bootstrap/utils.html" as utils %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% extends "layouts/base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Password Reset Request{% endblock %}
 {% block body %}
 <div class="content-section">
     <br/>
     {{ utils.flashed_messages() }}
     <br/>
     <div class="center">
-        <h1>Log in to an existing account</h1>
-        <br/>
+        <h1>Reset Password</h1>
+        <br> 
+        Please enter the email address associated with your account and we will send a link to reset your password.
+        <br><br>
         {{ wtf.quick_form(form) }}
-        <br>
-        <span id="password-help-block" class="help-block clickable small"><a href="{{ url_for('.forgot') }}">Forgot Password?</a></span>
-    </div>
 </div>
 {% endblock %}

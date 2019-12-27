@@ -5,8 +5,25 @@
 from app import db, login_manager
 
 # third-party imports
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_security import UserMixin, RoleMixin
+
+roles_users = db.Table('roles_users',
+                       db.Column('user_id', db.Integer(),
+                                 db.ForeignKey('users.id')),
+                       db.Column('role_id', db.Integer(),
+                                 db.ForeignKey('roles.id')))
+
+
+class Role(RoleMixin, db.Model):
+    """
+    Create a role table
+    """
+
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
 
 
 class User(UserMixin, db.Model):
@@ -20,30 +37,13 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(60), index=True, unique=True)
     first_name = db.Column(db.String(30), index=True)
     last_name = db.Column(db.String(30), index=True)
-    password_hash = db.Column(db.String(128))
+    password = db.Column(db.String(255))
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
     lessons = db.relationship('Lesson', backref='author', lazy='dynamic')
-    is_admin = db.Column(db.Boolean, default=False)
-
-    @property
-    def password(self):
-        """
-        Secure password from access
-        """
-        raise AttributeError('password is not a readable attribute.')
-
-    @password.setter
-    def password(self, password):
-        """
-        Set password to hashed password
-        """
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        """
-        Check if hashed password matches given password
-        """
-        return check_password_hash(self.password_hash, password)
+    confirmed_at = db.Column(db.DateTime())
+    active = db.Column(db.Boolean())
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
 
     def __repr__(self):
         return '<User: %s %s>'.format(self.first_name, self.lastname)

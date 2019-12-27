@@ -7,6 +7,10 @@ body, html {
 
 body {
     font-family: Arial, sans-serif;
+}
+
+
+.bold-text {
     font-weight: 700;
 }
 
@@ -65,6 +69,14 @@ p.copyright {
     background-color: #aec251;
 }
 
+.clickable {
+    color: #aec251;
+}
+
+.clickable:hover {
+    color: #687430;
+}
+
 .center {
     margin: auto;
     width: 50%;
@@ -77,8 +89,8 @@ p.copyright {
 }
 
 .footer, .push {
-  clear: both;
-  height: 4em;
+    clear: both;
+    height: 4em;
 }
 
 .intro-divider {

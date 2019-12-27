@@ -1,0 +1,14 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "layouts/base.html" %}
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% block title %}Register{% endblock %}
+{% include "security/_messages.html" %}
+{% block body %}
+<div class="content-section">
+    <div class="center">
+        <h1>{{ _('Register for a new account') }}</h1>
+        <br/>
+        {{ wtf.quick_form(register_user_form) }}
+    </div>
+</div>
+{% endblock %}

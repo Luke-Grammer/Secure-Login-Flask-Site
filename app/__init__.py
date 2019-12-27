@@ -8,14 +8,19 @@ from config import app_config
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore
 
 # db variable initialization
 db = SQLAlchemy()
 
 # login manager variable initialization
 login_manager = LoginManager()
+
+from app import models
+user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 
 
 def create_app(config_name):
@@ -30,7 +35,14 @@ def create_app(config_name):
     login_manager.login_view = 'auth.login'
     migrate = Migrate(app, db)
 
-    from app import models
+    from instance.config import PASSWORD_SALT, MAIL_PASSWORD
+    app.config['SECURITY_PASSWORD_SALT'] = PASSWORD_SALT
+    app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
+
+    mail = Mail(app)
+
+    with app.app_context():
+        db.create_all()
 
     from .admin import admin as admin_blueprint
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
@@ -40,5 +52,10 @@ def create_app(config_name):
 
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
+
+    from app.auth.forms import CustomLoginForm, CustomRegisterForm
+    security = Security(app, user_datastore,
+                        register_form=CustomRegisterForm,
+                        login_form=CustomLoginForm)
 
     return app
