@@ -3,13 +3,13 @@
 
 from wtforms import (PasswordField, StringField,
                      BooleanField, SubmitField, ValidationError)
-from flask_security import (LoginForm, RegisterForm,
+from flask_security import (LoginForm, ConfirmRegisterForm,
                             ForgotPasswordForm, ResetPasswordForm)
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from ..models import User
 
 
-class CustomRegisterForm(RegisterForm):
+class CustomRegisterForm(ConfirmRegisterForm):
     """
     Form for users to create new accounts
     """

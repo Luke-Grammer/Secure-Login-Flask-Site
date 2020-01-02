@@ -36,7 +36,6 @@ def create_app(config_name):
     migrate = Migrate(app, db)
 
     from instance.config import PASSWORD_SALT, MAIL_PASSWORD
-    app.config['SECURITY_PASSWORD_SALT'] = PASSWORD_SALT
     app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
     mail = Mail(app)
@@ -54,7 +53,9 @@ def create_app(config_name):
     app.register_blueprint(home_blueprint)
 
     from app.auth.forms import CustomLoginForm, CustomRegisterForm
+    app.config['SECURITY_PASSWORD_SALT'] = PASSWORD_SALT
     security = Security(app, user_datastore,
+                        confirm_register_form=CustomRegisterForm,
                         register_form=CustomRegisterForm,
                         login_form=CustomLoginForm)
 

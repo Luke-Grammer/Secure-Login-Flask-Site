@@ -7,10 +7,13 @@ class Config(object):
     # Location for configurations common across environments
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECURITY_REGISTERABLE = True
-    MAIL_SERVER = 'smtp-mail.outlook.com'
-    MAIL_PORT = 465
-    MAIL_USE_TLS = False,
-    MAIL_USE_SSL = True,
+    SECURITY_RECOVERABLE = True
+    SECURITY_CONFIRMABLE = True
+    SECURITY_EMAIL_SUBJECT_REGISTER = 'Welcome to the LLDB!'
+
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
 
 
 class DevelopmentConfig(Config):
@@ -18,7 +21,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_ECHO = True
     MAIL_DEBUG = True
-    MAIL_USERNAME = 'luke.grammer@hotmail.com',
+    MAIL_USERNAME = 'lukeagrammer@gmail.com'
+    MAIL_DEFAULT_SENDER = '"Lessons Learned Database" <noreply@gmail.com>'
 
 
 class ProductionConfig(Config):
