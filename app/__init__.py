@@ -52,10 +52,17 @@ def create_app(config_name):
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
-    from app.auth.forms import CustomLoginForm, CustomRegisterForm
+    from app.auth.forms import (CustomLoginForm, CustomRegisterForm,
+                                CustomForgotPasswordForm,
+                                CustomResetPasswordForm)
     app.config['SECURITY_PASSWORD_SALT'] = PASSWORD_SALT
+    app.config['SECURITY_MSG_PASSWORD_CHANGE'] = ('Your password has been changed ' +
+                                                  'successfully. \nYou may now log in.',
+                                                  'success')
     security = Security(app, user_datastore,
                         confirm_register_form=CustomRegisterForm,
+                        forgot_password_form=CustomForgotPasswordForm,
+                        reset_password_form=CustomResetPasswordForm,
                         register_form=CustomRegisterForm,
                         login_form=CustomLoginForm)
 

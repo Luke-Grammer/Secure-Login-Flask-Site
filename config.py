@@ -10,6 +10,9 @@ class Config(object):
     SECURITY_RECOVERABLE = True
     SECURITY_CONFIRMABLE = True
     SECURITY_EMAIL_SUBJECT_REGISTER = 'Welcome to the LLDB!'
+    SECURITY_TOKEN_MAX_AGE = 3600
+    SECURITY_MSG_PASSWORD_CHANGE = ('Your password has been changed ' +
+                                    'successfully.', 'info')
 
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587

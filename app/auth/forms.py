@@ -1,6 +1,7 @@
 # app/auth/forms.py
 # Written by Luke Grammer (12/19/19)
 
+from flask import flash
 from wtforms import (PasswordField, StringField,
                      BooleanField, SubmitField, ValidationError)
 from flask_security import (LoginForm, ConfirmRegisterForm,
@@ -61,21 +62,17 @@ class CustomLoginForm(LoginForm):
 
 
 class CustomForgotPasswordForm(ForgotPasswordForm):
-    email = StringField('Email Address', validators=[
-        DataRequired(),
-        Email()
-    ])
-
-    def validate_email(self, field):
-        if not User.query.filter_by(email=field.data).first():
-            raise ValidationError('Email is not associated with' +
-                                  ' any user account.')
-
     submit = SubmitField('Reset Password')
 
 
 class CustomResetPasswordForm(ResetPasswordForm):
-    current_password = PasswordField('Current Password', validators=[
+    password = PasswordField('New Password', validators=[
         DataRequired(),
         Length(min=7)
     ])
+
+    password_confirm = PasswordField('Confirm Password', validators=[
+        EqualTo(fieldname='password', message="Passwords must match.")
+    ])
+
+    submit = SubmitField('Reset Password')
