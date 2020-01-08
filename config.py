@@ -13,6 +13,7 @@ class Config(object):
     SECURITY_TOKEN_MAX_AGE = 3600
     SECURITY_MSG_PASSWORD_CHANGE = ('Your password has been changed ' +
                                     'successfully.', 'info')
+    SECURITY_POST_LOGIN_VIEW = '/dashboard'
 
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587

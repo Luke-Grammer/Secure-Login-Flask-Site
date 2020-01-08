@@ -23,7 +23,8 @@ class Role(RoleMixin, db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(255))
+    users = db.relationship('User', secondary='roles_users',
+                            backref=db.backref('users', lazy='dynamic'))
 
 
 class User(UserMixin, db.Model):
@@ -42,8 +43,9 @@ class User(UserMixin, db.Model):
     lessons = db.relationship('Lesson', backref='author', lazy='dynamic')
     confirmed_at = db.Column(db.DateTime())
     active = db.Column(db.Boolean())
-    roles = db.relationship('Role', secondary=roles_users,
-                            backref=db.backref('users', lazy='dynamic'))
+    admin = db.Column(db.Boolean(), default=False)
+    roles = db.relationship('Role', secondary='roles_users',
+                            backref=db.backref('roles', lazy='dynamic'))
 
     def __repr__(self):
         return '<User: %s %s>'.format(self.first_name, self.lastname)

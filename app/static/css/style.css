@@ -83,6 +83,23 @@ p.copyright {
     padding: 10px;
 }
 
+.outer {
+    display: table;
+    position: absolute;
+    height: 70%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .content-section {
     padding: 50px 0;
     border-top: 1px solid #e7e7e7;

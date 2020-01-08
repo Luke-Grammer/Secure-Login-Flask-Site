@@ -1,11 +1,13 @@
 <!-- app/templates/home/index.html -->
 
 {% extends "layouts/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
 {% block title %}Welcome{% endblock %}
 {% block body %}
 <div class="intro-header">
     <div class="container">
         <div class="row">
+            {{ utils.flashed_messages() }}
             <div class="col-lg-12">
                 <div class="intro-message">
                     <h1>Lessons Learned Database</h1>

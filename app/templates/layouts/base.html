@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}{% endblock %} | Lessons Learned Database</title>
+    <script src="//code.jquery.com/jquery.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} | Lessons Learned Database</title>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
@@ -24,6 +27,11 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
                         <li class="bold-text"><a href="{{ url_for('home.dashboard') }}">Dashboard</a></li>
+                        {% if current_user.admin %}
+                            <li class="bold-text"><a href="{{ url_for('admin.list_departments') }}">Manage Departments</a></li>
+                            <li class="bold-text"><a href="{{ url_for('admin.list_roles') }}">Manage Roles</a></li>
+                            <li class="bold-text"><a href="#">Manage Users</a></li>
+                        {% endif %}
                         <li class="bold-text"><a href="{{ url_for('security.logout') }}">Logout</a></li>
                         <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.first_name }}!</a></li>
                     {% else %}
