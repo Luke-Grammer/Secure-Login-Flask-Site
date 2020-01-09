@@ -6,9 +6,9 @@ from flask_security import current_user, login_required
 from sqlalchemy import exc
 
 from . import admin
-from .forms import DepartmentForm, RoleForm
+from .forms import DepartmentForm, RoleForm, UserAssignForm
 from .. import db
-from ..models import Department, Role
+from ..models import Department, User, Role
 
 
 def check_admin():
@@ -20,6 +20,8 @@ def check_admin():
 
 
 # Department Views
+
+
 @admin.route('/departments', methods=['GET', 'POST'])
 @login_required
 def list_departments():
@@ -51,7 +53,7 @@ def add_department():
             # add department to db
             db.session.add(department)
             db.session.commit()
-            flash("'" + department.name + "' has been successfully added.")
+            flash("Department has been successfully added.")
         except exc.SQLAlchemyError:
             # if department already exists
             flash("Error: department name already exists", "error")
@@ -112,13 +114,16 @@ def delete_department(id):
 
 
 # Role Views
+
+
 @admin.route('/roles')
 @login_required
 def list_roles():
-    check_admin()
     """
     List all roles
     """
+    check_admin()
+
     roles = Role.query.all()
     return render_template('admin/roles/roles.html',
                            roles=roles, title='Roles')
@@ -142,7 +147,7 @@ def add_role():
             # add role to database
             db.session.add(role)
             db.session.commit()
-            flash("'" + role.name + "' successfully added.")
+            flash("Role successfully added.")
         except exc.SQLAlchemyError:
             flash('Error: role name already exists.', 'error')
 
@@ -197,3 +202,49 @@ def delete_role(id):
 
     # redirect to roles page
     return redirect(url_for('admin.list_roles'))
+
+
+# User Views
+
+
+@admin.route('/users')
+@login_required
+def list_users():
+    """
+    List all users
+    """
+    check_admin()
+
+    users = User.query.all()
+
+    return render_template('admin/users/users.html',
+                           users=users, title='Users')
+
+
+@admin.route('/users/assign/<int:id>', methods=['GET', 'POST'])
+@login_required
+def assign_user(id):
+    """
+    Assign a department and role to a user
+    """
+    check_admin()
+
+    user = User.query.get_or_404(id)
+
+    if user.admin:
+        abort(403)
+
+    form = UserAssignForm(obj=user)
+    if form.validate_on_submit():
+        user.department = form.department.data
+        user.roles = [form.role.data]
+        db.session.add(user)
+        db.session.commit()
+        flash('Role and department successfully assigned.')
+
+        # redirect to the roles page
+        return redirect(url_for('admin.list_users'))
+
+    return render_template('admin/users/user.html',
+                           user=user, form=form,
+                           title='Assign User')

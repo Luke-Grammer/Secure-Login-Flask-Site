@@ -30,7 +30,7 @@
                         {% if current_user.admin %}
                             <li class="bold-text"><a href="{{ url_for('admin.list_departments') }}">Manage Departments</a></li>
                             <li class="bold-text"><a href="{{ url_for('admin.list_roles') }}">Manage Roles</a></li>
-                            <li class="bold-text"><a href="#">Manage Users</a></li>
+                            <li class="bold-text"><a href="{{ url_for('admin.list_users') }}">Manage Users</a></li>
                         {% endif %}
                         <li class="bold-text"><a href="{{ url_for('security.logout') }}">Logout</a></li>
                         <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.first_name }}!</a></li>

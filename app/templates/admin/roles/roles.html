@@ -28,7 +28,7 @@
                                         <td> {{ role.name }} </td>
                                         <td>
                                             {% if role.users %}
-                                                {{ role.users.count() }}
+                                                {{ role.users|length }}
                                             {% else %}
                                                 0
                                             {% endif %}

@@ -48,7 +48,7 @@ class User(UserMixin, db.Model):
                             backref=db.backref('roles', lazy='dynamic'))
 
     def __repr__(self):
-        return '<User: %s %s>'.format(self.first_name, self.lastname)
+        return '<User: {} {}>'.format(self.first_name, self.last_name)
 
 
 # Set up user_loader
@@ -69,7 +69,7 @@ class Department(db.Model):
     users = db.relationship('User', backref='department', lazy='dynamic')
 
     def __repr__(self):
-        return '<Department: %s>'.format(self.name)
+        return '<Department: {}>'.format(self.name)
 
 
 class Client(db.Model):
@@ -84,7 +84,7 @@ class Client(db.Model):
     projects = db.relationship('Project', backref='client', lazy='dynamic')
 
     def __repr__(self):
-        return '<Client: %s>'.format(self.name)
+        return '<Client: {}>'.format(self.name)
 
 
 class Project(db.Model):
@@ -102,7 +102,7 @@ class Project(db.Model):
     lessons = db.relationship('Lesson', backref='project', lazy='dynamic')
 
     def __repr__(self):
-        return '<Project: %s>'.format(self.name)
+        return '<Project: {}>'.format(self.name)
 
 
 class Lesson(db.Model):
@@ -121,8 +121,8 @@ class Lesson(db.Model):
     lesson = db.Column(db.String(255), index=True)
 
     def __repr__(self):
-        return ('<Lesson:\nProject: %s\nSubject: %s\n\n ' +
-                'Lesson:\n%s\n(Keywords: %s)>').format(self.project,
+        return ('<Lesson:\nProject: {}\nSubject: {}\n\n ' +
+                'Lesson:\n{}\n(Keywords: {})>').format(self.project,
                                                        self.subject,
                                                        self.lesson,
                                                        self.keywords)
